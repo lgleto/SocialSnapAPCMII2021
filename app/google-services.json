@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "166708745691",
+    "firebase_url": "https://socialsnap-2682b.firebaseio.com",
+    "project_id": "socialsnap-2682b",
+    "storage_bucket": "socialsnap-2682b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:166708745691:android:de37e73cadf1bfa53803fe",
+        "android_client_info": {
+          "package_name": "ipca.example.socialsnap"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "166708745691-4c6bpgcaaqie5sk3rf2fscojacv2555m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwq9qv9GEmF8mj459UKygD4zzM0OG9SZ8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "166708745691-4c6bpgcaaqie5sk3rf2fscojacv2555m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
