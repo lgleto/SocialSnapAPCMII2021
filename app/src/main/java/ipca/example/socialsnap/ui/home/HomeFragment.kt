@@ -1,5 +1,6 @@
 package ipca.example.socialsnap.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,10 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
+import ipca.example.socialsnap.PhotoDetailFragment
 import ipca.example.socialsnap.R
+import kotlinx.android.synthetic.main.fragment_home.*
 
 class HomeFragment : Fragment() {
 
@@ -27,5 +31,22 @@ class HomeFragment : Fragment() {
             textView.text = it
         })
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        fabNewPhoto.setOnClickListener {
+            /*
+            val fm = requireActivity().supportFragmentManager
+            val fragment = PhotoDetailFragment()
+            fm.beginTransaction()
+                .replace(R.id.nav_host_fragment, fragment )
+                .addToBackStack(null).commit()
+             */
+
+             val action =  HomeFragmentDirections.actionNavigationHomeToPhotoDetailFragment()
+            it.findNavController().navigate(action)
+
+        }
     }
 }
