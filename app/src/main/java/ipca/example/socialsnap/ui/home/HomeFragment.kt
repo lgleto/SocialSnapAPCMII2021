@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.firestore.FirebaseFirestore
 import ipca.example.socialsnap.R
 import ipca.example.socialsnap.models.SnapItem
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -45,6 +46,22 @@ class HomeFragment : Fragment() {
              val action =  HomeFragmentDirections.actionNavigationHomeToPhotoDetailFragment()
              it.findNavController().navigate(action)
         }
+
+        val db = FirebaseFirestore.getInstance()
+        db.collection("snaps")
+            .get()
+            .addOnSuccessListener {documents ->
+                for(d in documents){
+
+                    snapItems.add(SnapItem.formHash(d.data as HashMap<String, Any?>))
+                }
+                mAdapter?.notifyDataSetChanged()
+            }
+            .addOnFailureListener {
+
+            }
+
+
     }
 
     inner class PhotosAdapter : RecyclerView.Adapter<PhotosAdapter.ViewHolder>() {
