@@ -1,5 +1,7 @@
-package ipca.example.socialsnap
+package ipca.example.socialsnap.models
 
+import ipca.example.socialsnap.helpers.dateToString
+import ipca.example.socialsnap.helpers.stringToDate
 import java.util.*
 import kotlin.collections.HashMap
 

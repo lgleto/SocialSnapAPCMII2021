@@ -1,4 +1,4 @@
-package ipca.example.socialsnap
+package ipca.example.socialsnap.helpers
 
 
 import java.text.SimpleDateFormat

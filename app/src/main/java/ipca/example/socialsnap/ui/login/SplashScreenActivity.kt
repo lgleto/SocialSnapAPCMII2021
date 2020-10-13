@@ -1,4 +1,4 @@
-package ipca.example.socialsnap
+package ipca.example.socialsnap.ui.login
 
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
@@ -6,6 +6,8 @@ import android.os.Bundle
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import ipca.example.socialsnap.MainActivity
+import ipca.example.socialsnap.R
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.

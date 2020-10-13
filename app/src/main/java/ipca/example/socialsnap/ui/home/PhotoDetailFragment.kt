@@ -1,4 +1,4 @@
-package ipca.example.socialsnap
+package ipca.example.socialsnap.ui.home
 
 import android.app.Activity
 import android.content.Intent
@@ -9,11 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import ipca.example.socialsnap.R
+import ipca.example.socialsnap.models.SnapItem
 import kotlinx.android.synthetic.main.activity_photo_detail.*
 
 import java.util.*

@@ -16,13 +16,8 @@
     </fragment>
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="ipca.example.socialsnap.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
-    <fragment
         android:id="@+id/photoDetailFragment"
-        android:name="ipca.example.socialsnap.PhotoDetailFragment"
+        android:name="ipca.example.socialsnap.ui.home.PhotoDetailFragment"
         android:label="activity_photo_detail"
         tools:layout="@layout/activity_photo_detail" />
 
