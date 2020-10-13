@@ -13,9 +13,11 @@ import androidx.fragment.app.Fragment
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import ipca.example.socialsnap.R
 import ipca.example.socialsnap.models.SnapItem
 import kotlinx.android.synthetic.main.activity_photo_detail.*
+import java.io.ByteArrayOutputStream
 
 import java.util.*
 
@@ -50,23 +52,47 @@ class PhotoDetailFragment : Fragment() {
         }
 
         buttonPublish.setOnClickListener {
-            var auth = Firebase.auth
-            val currentUser = auth.currentUser
 
-            val db = FirebaseFirestore.getInstance()
-            val snap = SnapItem("",
-                            editTextDescription.text.toString(),
-                            date,
-                            currentUser!!.uid)
+            val storageRef = Firebase.storage.reference
 
-            db.collection("snaps")
-                .add(snap.toHashMap())
-                .addOnSuccessListener {
-                    requireActivity().supportFragmentManager.popBackStack()
-                }
-                .addOnFailureListener {
-                    Toast.makeText(requireContext(), "Algo correu mal!", Toast.LENGTH_SHORT).show()
-                }
+            val imagesRef = storageRef.child("images/${UUID.randomUUID()}.jpg")
+
+
+            val baos = ByteArrayOutputStream()
+            bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+            val data = baos.toByteArray()
+
+            var uploadTask = imagesRef.putBytes(data)
+            uploadTask.addOnFailureListener {
+                // Handle unsuccessful uploads
+
+            }.addOnSuccessListener { taskSnapshot ->
+                // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
+
+                var auth = Firebase.auth
+                val currentUser = auth.currentUser
+
+                val db = FirebaseFirestore.getInstance()
+                val snap = SnapItem(
+                    imagesRef.name,
+                    editTextDescription.text.toString(),
+                    date,
+                    currentUser!!.uid
+                )
+
+                db.collection("snaps")
+                    .add(snap.toHashMap())
+                    .addOnSuccessListener {
+                        requireActivity().supportFragmentManager.popBackStack()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(requireContext(), "Algo correu mal!", Toast.LENGTH_SHORT).show()
+                    }
+            }
+
+
+
+
         }
 
     }

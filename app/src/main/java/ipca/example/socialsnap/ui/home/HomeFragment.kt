@@ -1,5 +1,6 @@
 package ipca.example.socialsnap.ui.home
 
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +14,16 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import ipca.example.socialsnap.R
 import ipca.example.socialsnap.models.SnapItem
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.row_photo.view.*
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.util.*
+import kotlin.collections.HashMap
 
 class HomeFragment : Fragment() {
 
@@ -24,6 +31,8 @@ class HomeFragment : Fragment() {
     private var mLayoutManager: LinearLayoutManager? = null
 
     private var snapItems : MutableList<SnapItem> = arrayListOf()
+
+    val storageRef = Firebase.storage.reference
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -49,17 +58,18 @@ class HomeFragment : Fragment() {
 
         val db = FirebaseFirestore.getInstance()
         db.collection("snaps")
-            .get()
-            .addOnSuccessListener {documents ->
-                for(d in documents){
+            .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+                snapItems.clear()
+                if (querySnapshot != null) {
+                    for(d in querySnapshot){
 
-                    snapItems.add(SnapItem.formHash(d.data as HashMap<String, Any?>))
+                        snapItems.add(SnapItem.formHash(d.data as HashMap<String, Any?>))
+                    }
                 }
                 mAdapter?.notifyDataSetChanged()
             }
-            .addOnFailureListener {
 
-            }
+
 
 
     }
@@ -84,6 +94,22 @@ class HomeFragment : Fragment() {
                 this.tag = position
                 //this.imageViewPhoto
                 this.textViewDescription.text = snapItems[position].description
+
+
+
+                val imagesRef = storageRef.child("images/${snapItems[position].filePath}")
+
+
+                val ONE_MEGABYTE: Long = 1024 * 1024
+                imagesRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
+                    // Data for "images/island.jpg" is returned, use this as needed
+                    val bais = ByteArrayInputStream(it)
+                    this.imageViewPhoto.setImageBitmap(BitmapFactory.decodeStream(bais))
+
+
+                }.addOnFailureListener {
+                    // Handle any errors
+                }
             }
         }
     }
