@@ -19,6 +19,11 @@
         android:id="@+id/photoDetailFragment"
         android:name="ipca.example.socialsnap.ui.home.PhotoDetailFragment"
         android:label="activity_photo_detail"
-        tools:layout="@layout/activity_photo_detail" />
+        tools:layout="@layout/activity_photo_detail" >
+        <argument
+            android:name="snapitemId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 
 </navigation>

@@ -10,6 +10,7 @@ import kotlin.collections.HashMap
 //
 class SnapItem {
 
+    var itemId      : String? = null
     var filePath    : String? = null
     var description : String? = null
     var date        : Date?   = null

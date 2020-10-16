@@ -52,18 +52,20 @@ class HomeFragment : Fragment() {
         recyclerView.adapter = mAdapter
 
         fabNewPhoto.setOnClickListener {
-             val action =  HomeFragmentDirections.actionNavigationHomeToPhotoDetailFragment()
+             val action =  HomeFragmentDirections.actionNavigationHomeToPhotoDetailFragment(null)
              it.findNavController().navigate(action)
         }
 
         val db = FirebaseFirestore.getInstance()
         db.collection("snaps")
+            .orderBy("date")
             .addSnapshotListener { querySnapshot, firebaseFirestoreException ->
                 snapItems.clear()
                 if (querySnapshot != null) {
                     for(d in querySnapshot){
-
-                        snapItems.add(SnapItem.formHash(d.data as HashMap<String, Any?>))
+                        val snap = SnapItem.formHash(d.data as HashMap<String, Any?>)
+                        snap.itemId = d.id
+                        snapItems.add(snap)
                     }
                 }
                 mAdapter?.notifyDataSetChanged()
@@ -94,11 +96,7 @@ class HomeFragment : Fragment() {
                 this.tag = position
                 //this.imageViewPhoto
                 this.textViewDescription.text = snapItems[position].description
-
-
-
                 val imagesRef = storageRef.child("images/${snapItems[position].filePath}")
-
 
                 val ONE_MEGABYTE: Long = 1024 * 1024
                 imagesRef.getBytes(ONE_MEGABYTE).addOnSuccessListener {
@@ -109,6 +107,11 @@ class HomeFragment : Fragment() {
 
                 }.addOnFailureListener {
                     // Handle any errors
+                }
+
+                this.setOnClickListener {
+                    val action =  HomeFragmentDirections.actionNavigationHomeToPhotoDetailFragment(snapItems[position].itemId)
+                    it.findNavController().navigate(action)
                 }
             }
         }
