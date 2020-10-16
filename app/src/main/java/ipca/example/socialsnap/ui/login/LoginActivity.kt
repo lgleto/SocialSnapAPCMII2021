@@ -1,8 +1,10 @@
 package ipca.example.socialsnap.ui.login
 
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -13,6 +15,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import ipca.example.socialsnap.MainActivity
 import ipca.example.socialsnap.R
@@ -51,6 +54,30 @@ class LoginActivity : AppCompatActivity() {
 
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
+
+                        var sharedPreferences: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+                        val token = sharedPreferences.getString("firebase_token","")
+                        if ((token?:"").isNotEmpty()){
+                            var auth = Firebase.auth
+                            val currentUser = auth.currentUser
+                            val db = FirebaseFirestore.getInstance()
+
+                            val hashMap = HashMap<String, Any?>()
+                            hashMap["token"] = token
+                            hashMap["email"] = currentUser?.email
+
+                            currentUser?.let {
+                                db.collection("users")
+                                    .document(currentUser?.uid?:"")
+                                    .set(hashMap)
+                                    .addOnSuccessListener {
+
+                                    }
+                                    .addOnFailureListener {
+
+                                    }
+                            }
+                        }
 
                     } else {
                         // If sign in fails, display a message to the user.

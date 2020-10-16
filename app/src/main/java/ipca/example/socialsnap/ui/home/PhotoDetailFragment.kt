@@ -21,7 +21,6 @@ import com.google.firebase.storage.ktx.storage
 import ipca.example.socialsnap.R
 import ipca.example.socialsnap.models.SnapItem
 import kotlinx.android.synthetic.main.activity_photo_detail.*
-import kotlinx.android.synthetic.main.row_photo.view.*
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
